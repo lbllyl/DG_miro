@@ -1,0 +1,26 @@
+PACS:
+  MIRO: 
+    baseline: /home/yuwenlong/works/liu/miro/checkpoints/PACS/221211_21-56-16_PACS_baseline_basic
+    algorithm: 
+        - /home/yuwenlong/works/liu/miro/checkpoints/PACS/221212_16-47-37_PACS_-0.008_classifier_old_trans               
+        - /home/yuwenlong/works/liu/miro/checkpoints/PACS/221218_12-47-26_PACS_ERM_baseline_basic
+  ERM: 
+    baseline: /home/yuwenlong/works/liu/miro/checkpoints/PACS/221218_12-47-26_PACS_ERM_baseline_basic
+    algorithm: 
+        - /home/yuwenlong/works/liu/miro/checkpoints/PACS/221213_21-55-55_PACS_ERM_-0.01_classifier_old_trans_best
+        - /home/yuwenlong/works/liu/miro/checkpoints/PACS/221219_10-41-27_PACS_ERM_0.5_classifier_old_trans_best
+  GroupDRO: 
+    baseline: /home/yuwenlong/works/liu/miro/checkpoints/PACS/221217_16-33-21_PACS_GroupDRO_baseline_basic
+    algorithm:
+        - /home/yuwenlong/works/liu/miro/checkpoints/PACS/221219_21-16-49_PACS_GroupDRO_0.02_classifier_old_trans_best
+        - /home/yuwenlong/works/liu/miro/checkpoints/PACS/221214_03-39-00_PACS_GroupDRO_-0.01_classifier_old_trans_best
+  VREx: 
+    baseline: /home/yuwenlong/works/liu/miro/checkpoints/PACS/221214_11-53-29_PACS_VREx_baseline_basic
+    algorithm: 
+        - /home/yuwenlong/works/liu/miro/checkpoints/PACS/221216_21-04-00_PACS_VREx_-0.005_classifier_old_trans_best
+        - /home/yuwenlong/works/liu/miro/checkpoints/PACS/221219_23-23-44_PACS_VREx_0.1_classifier_old_trans_best
+  Mixstyle:
+    baseline: /home/yuwenlong/works/liu/miro/checkpoints/PACS/221218_14-51-24_PACS_Mixstyle_baseline_basic
+    algorithm: 
+        - /home/yuwenlong/works/liu/miro/checkpoints/PACS/221214_15-32-48_PACS_Mixstyle_-0.01_classifier_old_trans_best
+        - /home/yuwenlong/works/liu/miro/checkpoints/PACS/221220_12-59-44_PACS_Mixstyle_0.1_classifier_old_trans_best

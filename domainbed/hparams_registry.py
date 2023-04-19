@@ -95,6 +95,12 @@ def _hparams(algorithm, dataset, random_state):
         # cutmix_prob is set to 1.0 for ImageNet and 0.5 for CIFAR100 in the original paper.
         hparams["cutmix_prob"] = (1.0, 1.0)
 
+    # eval transforms
+    hparams["eval_pepper_snr"] = (0.7, 0.7)
+
+    hparams["eval_gaussian_mean"] = (0.0, 0.0)
+    hparams["eval_gaussian_std"] = (0.1, 0.1)
+
     return hparams
 
 

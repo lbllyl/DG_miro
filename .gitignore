@@ -13,3 +13,4 @@ perturb_results/
 *.ipynb
 *.tar
 wandb
+checkpoints

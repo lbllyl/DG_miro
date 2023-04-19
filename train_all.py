@@ -2,6 +2,8 @@ import argparse
 import collections
 import random
 import sys
+import wandb
+import datetime
 from pathlib import Path
 
 import numpy as np
@@ -64,6 +66,14 @@ def main():
     keys = [open(key, encoding="utf8") for key in keys]
     hparams = Config(*keys, default=hparams)
     hparams.argv_update(left_argv)
+
+
+    wandb.init(project="miro", 
+                config={
+                    "args":args,
+                    "hparams":hparams
+                },
+                name=f"{args.name}_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}")
 
     # setup debug
     if args.debug:
@@ -185,6 +195,9 @@ def main():
         table.add_row([key] + row)
     logger.nofmt(table)
 
+    # log the table to wandb
+    wandb.log({"summary":wandb.Table(data=table._rows, columns=table._field_names)})
+    wandb.finish()
 
 if __name__ == "__main__":
     main()

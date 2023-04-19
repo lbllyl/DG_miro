@@ -4,6 +4,8 @@ import time
 import copy
 from pathlib import Path
 
+import wandb
+
 import numpy as np
 import torch
 import torch.utils.data
@@ -11,6 +13,8 @@ import torch.utils.data
 from domainbed.datasets import get_dataset, split_dataset
 from domainbed import algorithms
 from domainbed.evaluator import Evaluator
+from domainbed.datasets.transforms import SaltPeperNoise, GaussianNoise
+from torchvision import transforms
 from domainbed.lib import misc
 from domainbed.lib import swa_utils
 from domainbed.lib.query import Q
@@ -120,6 +124,13 @@ def train(test_envs, args, hparams, n_steps, checkpoint_freq, logger, writer, ta
     #######################################################
     # start training loop
     #######################################################
+    eval_transforms = transforms.Compose(
+        [
+            SaltPeperNoise(snr=hparams["eval_pepper_snr"], image_range=(0,255)),
+            GaussianNoise(mean=hparams["eval_gaussian_mean"], std=hparams["eval_gaussian_std"], image_range=(0,255)),
+        ]
+    )
+
     evaluator = Evaluator(
         test_envs,
         eval_meta,
@@ -128,6 +139,7 @@ def train(test_envs, args, hparams, n_steps, checkpoint_freq, logger, writer, ta
         evalmode=args.evalmode,
         debug=args.debug,
         target_env=target_env,
+        eval_transforms=eval_transforms,
     )
 
     swad = None
@@ -194,6 +206,12 @@ def train(test_envs, args, hparams, n_steps, checkpoint_freq, logger, writer, ta
 
             with open(epochs_path, "a") as f:
                 f.write(json.dumps(results, sort_keys=True, default=json_handler) + "\n")
+
+            # wandb logging
+            excluded_keys = ["args", "epoch", "hparams", "step"]
+            wandb_item = {k: v for k, v in results.items() if k not in excluded_keys}
+            wandb_step = results.get("step", None)
+            wandb.log(wandb_item, step=wandb_step)
             
             # print("train_out_acc: ", records[-1]["train_out"])
             # print(step)
@@ -268,6 +286,8 @@ def train(test_envs, args, hparams, n_steps, checkpoint_freq, logger, writer, ta
             # add step values only for tb log
             writer.add_scalars_with_prefix(step_vals, step, f"{testenv_name}/summary/")
 
+    # end for -----------------------------------------------------------------------------
+    
     # find best
     logger.info("---")
     records = Q(records)
